@@ -1,1 +1,175 @@
-Hello World.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARISTOTLE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css"
+    /> 
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+   <div>
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-md navbar-light">
+            <div class="container-xl">
+                <a href="#intro" class="navbar-brand">
+                    <div class="row">
+                        <!-- <span class="fw-bold text-secondary">
+                            ARISTOTLE's HUB
+                        </span> -->
+                        <span class="nav-link border rounded-pill bg-light">
+                            <span id="balance"> 0</span>
+                            cUSD
+                        </span>
+                    </div>
+                </a>
+                <!-- toggle button for mobile dev -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <!-- navbar links -->
+                <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="#home" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item ms-2  d-md-inline">
+                            <a href="#sale" class="nav-link">Sell now</a>
+                        </li>
+                        <li class="nav-item ms-2 d-md-inline">
+                            <a href="#book-store" class="nav-link">Buy now</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Notification -->
+        <div class="alert alert-warning sticky-top mt-2" role="alert">
+            <span id="notification">⌛ Loading...</span>
+          </div>
+        
+
+        
+        <!-- Modal -->
+        <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Book Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-row">
+                        <div class="col">
+                            <input
+                            type="text"
+                            id="newBookName"
+                            class="form-control mb-2"
+                            placeholder="Enter name of book"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                            type="text"
+                            id="newImgUrl"
+                            class="form-control mb-2"
+                            placeholder="Enter book image Url"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                            type="text"
+                            id="newBookDescription"
+                            class="form-control mb-2"
+                            placeholder="Enter book description"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                            type="text"
+                            id="newBookAuthor"
+                            class="form-control mb-2"
+                            placeholder="Enter Author"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                            type="text"
+                            id="newPrice"
+                            class="form-control mb-2"
+                            placeholder="Enter price"
+                            />
+                        </div>
+                        </div>
+                    </form>
+                    </div>
+                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="Newbook">Upload book</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+    
+    
+        <!-- SECTIONS -->
+        <section id="home">
+            <div class="container-lg ">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-5 text-center text-md-start">
+                        <h1>
+                            <div class="display-2">Welcome</div>
+                            <div class="display-5 text-muted">The World of Books Awaits you</div>
+                        </h1>
+                        <p class="lead my-4 text-muted">A nice platform where you can use CELO to buy and sell books.</p>
+                        <a href="#buy-now" class="btn btn-secondary btn-lg">Buy Now</a>
+                    </div>
+                    <div class="col-md-5 text-center d-none d-md-block">
+                        <img src="https://99designs-start-attachments.imgix.net/alchemy-pictures/2016%2F02%2F12%2F00%2F05%2F05%2F910db405-6bd4-4a5d-bce7-c2e3135dc5e6%2F449070_WAntoneta_55908c_killing.png?auto=format&ch=Width%2CDPR&fm=png&w=600&h=600" alt="hello">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section id="sale">
+            <div class="container-lg mt-3 mb-3">
+                <div class="justify-content-center align-items-center">
+                    <div class="col-md-5 text-center text-md-start">
+                        <h1>
+                            <div class="display-2">Upload your Own Books on this site for free</div>
+                            <div class="display-5 text-muted">Get connected and popular as you share your books and get paid</div>
+                        </h1>
+                        <p class="lead my-4 text-muted">The world is at your doorstep.What are you waiting for?</p>
+                        <a href="#sell" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#Modal">Upload Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <main id="book-store" class="row m-3">
+
+        </main>
+    </div>
+
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="src/main.js"></script>
+    <script src="https://unpkg.com/ethereum-blockies@0.1.1/blockies.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</body>
+</html>

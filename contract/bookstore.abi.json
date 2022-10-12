@@ -7,14 +7,14 @@
 				"type": "uint256"
 			}
 		],
-		"name": "buyProduct",
+		"name": "buyBook",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "getProductsLength",
+		"name": "getBooksLength",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -33,7 +33,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "readProduct",
+		"name": "readBook",
 		"outputs": [
 			{
 				"internalType": "address payable",
@@ -77,6 +77,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "reserveBook",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "_name",
 				"type": "string"
@@ -93,16 +106,21 @@
 			},
 			{
 				"internalType": "string",
-				"name": "_location",
+				"name": "_author",
 				"type": "string"
 			},
 			{
 				"internalType": "uint256",
 				"name": "_price",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_copies",
+				"type": "uint256"
 			}
 		],
-		"name": "writeProduct",
+		"name": "writeBook",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
