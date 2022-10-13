@@ -2,10 +2,12 @@
 import Web3 from 'web3'
 import { newKitFromWeb3 } from '@celo/contractkit'
 import BigNumber from "bignumber.js"
-import bookstoreAbi from '../contract/bookstore.abi.json'
+import BookPlaceAbi from '../contract/bookstore.abi.json'
+import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18;
-const MPContractAddress = "0x9d83e140330758a8fFD07F8Bd73e86ebcA8a5692";
+const MPContractAddress = "0xD059e111d50429177A4a6082646341d7fe41CdDc";
+const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 let kit;
 let contract;
 let books = [];
@@ -23,7 +25,7 @@ const connectCeloWallet = async function () {
       const accounts = await kit.web3.eth.getAccounts()
       kit.defaultAccount = accounts[0]
 
-      contract = new kit.web3.eth.Contract(bookstoreAbi, MPContractAddress)
+      contract = new kit.web3.eth.Contract(BookPlaceAbi, MPContractAddress);
 
 
     } catch (error) {
@@ -33,6 +35,16 @@ const connectCeloWallet = async function () {
     notifyRest("⚠️ Please install the CeloExtensionWallet.")
   }
 }
+
+async function approve(_price) {
+  const cUSDContract = new kit.web3.eth.Contract(erc20Abi, cUSDContractAddress)
+
+  const result = await cUSDContract.methods
+    .approve(MPContractAddress, _price)
+    .send({ from: kit.defaultAccount })
+  return result
+}
+
 const showWorth = async function () {
   const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
   const cUSDBalance = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2)
@@ -133,12 +145,11 @@ window.addEventListener("load", async () => {
   await connectCeloWallet();
   await showWorth();
   await getBooks();
-  await displayBooks();
   notifyRest()
 })
 
 document
-.querySelector("#Newbook")
+.querySelector("#newBook")
 .addEventListener("click", async (e) => {
   const params = [
     document.getElementById("newBookName").value,
@@ -157,14 +168,28 @@ document
     notify(`⚠️ ${error}.`)
   }
   notify(`🎉 You successfully added "${params[0]}".`)
-  displayBooks();
+  getBooks();
 })
 
-document.querySelector("#book-store").addEventListener("click", (o) => {
+document.querySelector("#book-store").addEventListener("click", async (o) => {
   if(o.target.className.includes("buyBtn")) {
     const index = o.target.id
-    products[index].sold++
-    notify(`🎉 You successfully bought "${products[index].name}".`)
-    displayBooks();
+    notify(`⌛ Waiting for payment approval....`)
+    try {
+      await approve(books[index].price)
+    } catch (error) {
+      notify(`${error}.`)
+    }
+    notify(`⌛ Awaiting payment for "${books[index].name}"...`)
+    try {
+      const result = await contract.methods
+        .buyBook(index)
+        .send({ from: kit.defaultAccount })
+      notify(`🎉 You successfully bought "${books[index].name}".`)
+      getBooks()
+      showWorth()
+    } catch (error) {
+      notify(`⚠️ ${error}.`)
+    }
   }
 })
