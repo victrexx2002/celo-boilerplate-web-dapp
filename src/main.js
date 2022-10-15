@@ -1,21 +1,21 @@
-// const { WrapperCache } = require("@celo/contractkit/lib/contract-cache");
+const { WrapperCache } = require("@celo/contractkit/lib/contract-cache");
 import Web3 from 'web3'
 import { newKitFromWeb3 } from '@celo/contractkit'
 import BigNumber from "bignumber.js"
-import BookPlaceAbi from '../contract/bookstore.abi.json'
+import bookstoreAbi from '../contract/bookstore.abi.json'
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18;
-const MPContractAddress = "0xD059e111d50429177A4a6082646341d7fe41CdDc";
-const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
+const MPContractAddress = "0xf26B09Cccc701Abc254077F6A839765bB250AeBb";
+// const cUSDContractAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1";
 let kit;
 let contract;
 let books = [];
 
 const connectCeloWallet = async function () {
   if (window.celo) {
-      notify("⚠️ Please approve this DApp to use it.")
     try {
+      notify("⚠️ Please approve this DApp to use it.")
       await window.celo.enable()
       notifyRest()
 
@@ -25,25 +25,25 @@ const connectCeloWallet = async function () {
       const accounts = await kit.web3.eth.getAccounts()
       kit.defaultAccount = accounts[0]
 
-      contract = new kit.web3.eth.Contract(BookPlaceAbi, MPContractAddress);
+      contract = new kit.web3.eth.Contract(bookstoreAbi, MPContractAddress);
 
 
     } catch (error) {
       notify(`⚠️ ${error}.`)
     }
   } else {
-    notifyRest("⚠️ Please install the CeloExtensionWallet.")
+    notify("⚠️ Please install the CeloExtensionWallet.")
   }
 }
 
-async function approve(_price) {
-  const cUSDContract = new kit.web3.eth.Contract(erc20Abi, cUSDContractAddress)
+// async function approve(_price) {
+//   const cUSDContract = new kit.web3.eth.Contract(erc20Abi, cUSDContractAddress)
 
-  const result = await cUSDContract.methods
-    .approve(MPContractAddress, _price)
-    .send({ from: kit.defaultAccount })
-  return result
-}
+//   const result = await cUSDContract.methods
+//     .approve(MPContractAddress, _price)
+//     .send({ from: kit.defaultAccount })
+//   return result
+// }
 
 const showWorth = async function () {
   const totalBalance = await kit.getTotalBalance(kit.defaultAccount)
@@ -54,6 +54,7 @@ const showWorth = async function () {
 const getBooks = async function() {
   const _booksLength = await contract.methods.getBooksLength().call()
   const _books = []
+
   for (let i = 0; i < _booksLength; i++) {
     let _book = new Promise(async (resolve, reject) => {
       let b = await contract.methods.readBook(i).call()
@@ -148,9 +149,7 @@ window.addEventListener("load", async () => {
   notifyRest()
 })
 
-document
-.querySelector("#newBook")
-.addEventListener("click", async (e) => {
+document.querySelector("#newbook").addEventListener("click", async () => {
   const params = [
     document.getElementById("newBookName").value,
     document.getElementById("newImgUrl").value,
@@ -159,7 +158,7 @@ document
     new BigNumber(document.getElementById("newPrice").value)
     .shiftedBy(ERC20_DECIMALS).toString()
   ]
-  notify(`🎉 Adding ${params[0]}...`)
+  notify(`⌛ Adding ${params[0]}...`)
   try {
     const result = await contract.methods
       .writeBook(...params)
@@ -171,25 +170,25 @@ document
   getBooks();
 })
 
-document.querySelector("#book-store").addEventListener("click", async (o) => {
-  if(o.target.className.includes("buyBtn")) {
-    const index = o.target.id
-    notify(`⌛ Waiting for payment approval....`)
-    try {
-      await approve(books[index].price)
-    } catch (error) {
-      notify(`${error}.`)
-    }
-    notify(`⌛ Awaiting payment for "${books[index].name}"...`)
-    try {
-      const result = await contract.methods
-        .buyBook(index)
-        .send({ from: kit.defaultAccount })
-      notify(`🎉 You successfully bought "${books[index].name}".`)
-      getBooks()
-      showWorth()
-    } catch (error) {
-      notify(`⚠️ ${error}.`)
-    }
-  }
-})
+// document.querySelector("#book-store").addEventListener("click", async (o) => {
+//   if(o.target.className.includes("buyBtn")) {
+//     const index = o.target.id
+//     notify(`⌛ Waiting for payment approval....`)
+//     try {
+//       await approve(books[index].price)
+//     } catch (error) {
+//       notify(`${error}.`)
+//     }
+//     notify(`⌛ Awaiting payment for "${books[index].name}"...`)
+//     try {
+//       const result = await contract.methods
+//         .buyBook(index)
+//         .send({ from: kit.defaultAccount })
+//       notify(`🎉 You successfully bought "${books[index].name}".`)
+//       getBooks()
+//       showWorth()
+//     } catch (error) {
+//       notify(`⚠️ ${error}.`)
+//     }
+//   }
+// })
